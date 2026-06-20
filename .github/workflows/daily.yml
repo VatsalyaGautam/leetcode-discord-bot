@@ -1,0 +1,23 @@
+name: Daily LeetCode Report
+
+on:
+  schedule:
+    # 00:00 IST (12 AM) == 18:30 UTC the previous day
+    - cron: '30 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run daily LeetCode report
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          USERS_FILE: users.json
+          REPORT_TIMEZONE: Asia/Kolkata
+        run: python main.py
